@@ -1,0 +1,339 @@
+<?php
+$page_title = "Hyper Infinity - Creación de Páginas Web";
+$current_year = date("Y");
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $page_title; ?></title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/jpeg" href="IMG/logo.png">
+    <style>
+        :root {
+            --color-primary: #1f2a47; 
+            --color-secondary: #ffffff; 
+            --color-accent: #e4c33e; 
+            --font-family: 'Poppins', sans-serif;
+            --border-radius: 0.5rem;
+            --transition: all 0.3s ease;    
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.8;
+            background: var(--color-secondary);
+            color: var(--color-primary);
+        }
+
+        img { max-width: 100%; height: auto; }
+        a { text-decoration: none; color: inherit; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+
+        h1, h2, h3 {
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 3rem; }
+        h2 { font-size: 2.5rem; }
+        h3 { font-size: 1.75rem; }
+        p { font-size: 1.2rem; font-weight: 500; }
+
+        .highlight { color: var(--color-accent); }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+        .btn-primary { background: var(--color-primary); color: var(--color-secondary); }
+        .btn-primary:hover { background: #333; }
+        .btn-highlight { background: var(--color-accent); color: var(--color-primary); position: relative; overflow: hidden; }
+        .btn-highlight::after {
+            content: "";
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: rgba(255,255,255,0.4);
+            transition: left 0.5s;
+        }
+        .btn-highlight:hover::after { left: 100%; }
+        .btn-outline { border: 2px solid var(--color-accent); color: var(--color-secondary); background: none; }
+        .btn-outline:hover { background: var(--color-accent); color: var(--color-primary); }
+
+        /* HEADER */
+        .header { background: var(--color-secondary); box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; height: 90px; }
+        .logo { display: flex; align-items: center; gap: 1rem; font-size: 2rem; font-weight: 800; color: var(--color-primary); }
+        .logo-img { height: 70px; object-fit: contain; }
+        .nav-desktop { display: none; }
+        .nav-link { margin: 0 1rem; font-weight: 600; font-size: 1.2rem; color: #495057; transition: var(--transition); }
+        .nav-link:hover, .nav-link.active { color: var(--color-accent); }
+        .desktop-only { display: none; }
+        .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 30px; height: 22px; background: transparent; border: none; cursor: pointer; }
+        .bar { width: 100%; height: 3px; background: var(--color-primary); transition: var(--transition); }
+        .mobile-menu { display: none; padding: 1rem 0; border-top: 1px solid #ddd; }
+        .mobile-menu.active { display: block; }
+        .nav-mobile { display: flex; flex-direction: column; }
+        .nav-mobile .nav-link { padding: 0.75rem 0; }
+        .mobile-btn { margin-top: 1rem; }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            color: var(--color-secondary);
+            padding: 6rem 0;
+            text-align: center;
+            background: linear-gradient(270deg, #1f2a47, #3b4a77, #1f2a47);
+            background-size: 600% 600%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden;
+        }
+        #particles {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .hero .container { position: relative; z-index: 2; }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1.5rem; animation: fadeInUp 1.5s ease forwards; opacity: 0; }
+        .hero p { font-size: 1.4rem; margin-bottom: 2rem; animation: fadeInUp 2s ease forwards; opacity: 0; }
+        .hero-buttons { display: flex; flex-direction: column; gap: 1rem; max-width: 500px; margin: 0 auto; animation: fadeInUp 2.5s ease forwards; opacity: 0; }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ABOUT */
+        .about { padding: 6rem 0; background: var(--color-primary); color: var(--color-secondary); }
+        .about h2 { text-align: center; margin-bottom: 3rem; font-size: 2.8rem; color: #fff; }
+        .about h2::after { content: ''; display: block; width: 80px; height: 4px; background: var(--color-accent); margin: 10px auto 0; border-radius: 2px; }
+        .about-content { display: flex; flex-direction: column; gap: 2rem; align-items: center; }
+        .about-text { flex: 1; font-size: 1.1rem; line-height: 1.6; text-align: center; }
+        .about-image { flex: 1; display: flex; justify-content: center; }
+        .about-image img { max-width: 280px; border-radius: 15px; border: 5px solid var(--color-accent); box-shadow: 0 8px 22px rgba(0,0,0,0.18); transition: transform 0.35s ease, box-shadow 0.35s ease; background: #fff; }
+        .about-image img:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 14px 40px rgba(0,0,0,0.25); }
+
+        /* SERVICES */
+        .services { padding: 6rem 0; background: var(--color-primary); color: var(--color-secondary); }
+        .services h2 { text-align: center; margin-bottom: 3rem; font-size: 2.8rem; color: #fff; }
+        .services h2 span { color: var(--color-accent); }
+        .services-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .service-card { background: #fff; border-radius: var(--border-radius); padding: 2.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: transform 0.4s ease, box-shadow 0.4s ease; text-align: center; opacity: 0; transform: translateY(20px); }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .service-card h3 { color: var(--color-primary); margin-bottom: 1rem; }
+        .service-card p { color: #333; }
+        .service-emoji { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
+
+        /* CTA */
+        .cta { padding: 5rem 0; background: #fff; color: var(--color-primary); text-align: center; }
+        .cta h2 { font-size: 2.8rem; margin-bottom: 1rem; }
+        .cta p { font-size: 1.3rem; margin-bottom: 2rem; }
+
+        /* FOOTER */
+        .footer { background: var(--color-primary); color: #adb5bd; padding: 3rem 0; text-align: center; font-size: 1rem; }
+
+        /* RESPONSIVE */
+        @media (min-width: 768px) {
+            .about-content { flex-direction: row; align-items: center; gap: 3rem; }
+            .about-text { text-align: left; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 992px) {
+            .nav-desktop { display: flex; }
+            .desktop-only { display: block; }
+            .menu-toggle { display: none; }
+            .services-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        /* Animación para servicios */
+        @keyframes fadeInMoveUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .service-card.visible { animation: fadeInMoveUp 1s forwards; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="navbar">
+                <a href="index.php" class="logo">
+                    <img src="IMG/logo.png" alt="Logo Hyper Infinity" class="logo-img">
+                    <span>Hyper<span class="highlight">Infinity</span></span>
+                </a>
+                <nav class="nav-desktop">  
+                    <a href="index.php" class="nav-link active">Inicio</a>
+                    <a href="proyectos.php" class="nav-link">Proyectos</a>
+                    <a href="mision-vision.php" class="nav-link">Misión y Visión</a>
+                    <a href="innovacion.php" class="nav-link">Innovación</a>
+                </nav>
+                <a href="contactt.php" class="btn btn-primary desktop-only">Contáctanos</a>
+                <button class="menu-toggle" id="menuToggle"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
+            </div>
+            <div class="mobile-menu" id="mobileMenu">
+                <nav class="nav-mobile">
+                    <a href="index.php" class="nav-link">Inicio</a>
+                    <a href="proyectos.php" class="nav-link">Proyectos</a>
+                    <a href="mision-vision.php" class="nav-link">Misión y Visión</a>
+                    <a href="innovacion.php" class="nav-link">Innovación</a>
+                    <a href="contactt.php" class="btn btn-primary mobile-btn">Contáctanos</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <canvas id="particles"></canvas>
+        <div class="container">
+            <h1>Diseñamos tu <span class="highlight">página web</span></h1>
+            <p>En Hyper Infinity, creamos páginas web modernas, rápidas y optimizadas para tu negocio.</p>
+            <div class="hero-buttons">
+                <a href="cotizacion.php" class="btn btn-highlight">Solicitar Presupuesto</a>
+                <a href="proyectos.php" class="btn btn-outline">Ver Proyectos</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="container">
+            <h2>Sobre Nosotros</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        En <b>HYPERINFINITY</b>, creemos que la tecnología puede ser un poderoso aliado para los negocios. 
+                        Nuestro equipo de expertos en desarrollo web se enfoca en crear soluciones innovadoras y personalizadas 
+                        que ayuden a nuestros clientes a conectarse con sus clientes, aumentar sus ventas y alcanzar el éxito en línea.
+                    </p>
+                </div>
+                <div class="about-image">
+                    <img src="IMG/sobrenosotros.png" alt="Equipo de trabajo">
+                </div>
+            </div>  
+        </div>
+    </section>
+
+    <section class="services">
+        <div class="container">
+            <h2>Nuestros <span>Servicios</span></h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <span class="service-emoji">💻</span> 
+                    <h3>Diseño Web</h3>
+                    <p>Páginas modernas, responsive y con enfoque en la experiencia del usuario.</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-emoji">🚀</span> 
+                    <h3>Optimización</h3>
+                    <p>Mejora de velocidad, SEO y seguridad para que tu web funcione al máximo.</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-emoji">🛠️</span> 
+                    <h3>Soporte Técnico</h3>
+                    <p>Análisis de datos y eficiencia de las aplicaciones.</p>
+                </div>
+                <div class="service-card">
+                    <span class="service-emoji">⚙️</span> 
+                    <h3>Mantenimiento Web</h3>
+                    <p>Mantenimiento y actualizaciones para que tu sitio siempre esté al día.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>¿Listo para empezar?</h2>
+            <p>Transformemos tu idea en una página web profesional que genere resultados.</p>
+            <a href="cotizacion.php" class="btn btn-highlight">Solicitar Presupuesto</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <?php echo $current_year; ?> Hyper Infinity. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle menú móvil
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('active');
+            const bars = document.querySelectorAll('.bar');
+            if (mobileMenu.classList.contains('active')) {
+                bars[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                bars[1].style.opacity = '0';
+                bars[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            } else {
+                bars[0].style.transform = 'rotate(0)';
+                bars[1].style.opacity = '1';
+                bars[2].style.transform = 'rotate(0)';
+            }
+        });
+
+        // Animación tarjetas de servicios
+        const serviceCards = document.querySelectorAll('.service-card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        serviceCards.forEach(card => observer.observe(card));
+
+        // Partículas Hero
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particlesArray;
+        function initParticles() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            particlesArray = [];
+            for (let i = 0; i < 60; i++) {
+                particlesArray.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 3 + 1,
+                    speedX: (Math.random() - 0.5) * 1,
+                    speedY: (Math.random() - 0.5) * 1
+                });
+            }
+        }
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+            particlesArray.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                p.x += p.speedX;
+                p.y += p.speedY;
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        window.addEventListener('resize', initParticles);
+        initParticles();
+        animateParticles();
+    </script>
+</body>
+</html>

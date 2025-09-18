@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cotizador - HyperInfinity</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+   <link rel="icon" type="image/png" href="IMG/logo.jpeg">
+  <style>
+    :root {
+      --color-primary: #2c3e50;
+      --color-secondary: #ffffff;
+      --color-accent:  #e4c33eff; 
+      --color-light: #f8f9fa;
+      --color-dark: #1a252f;
+      --color-gray: #6c757d;
+      --font-family: 'Poppins', sans-serif;
+      --border-radius: 12px;
+      --transition: all 0.3s ease;
+      --box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      --gradient: linear-gradient(135deg, var(--color-primary) 0%, #1a252f 100%);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-family);
+      line-height: 1.6;
+      color: #495057;
+      background: #f9fafb;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .header {
+      background: var(--color-secondary);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 10px 0;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    .logo-img {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .nav-desktop { 
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-link {
+      padding: 10px 18px;
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--color-gray);
+      transition: var(--transition);
+      border-radius: var(--border-radius);
+      text-decoration: none;
+    }
+
+    .nav-link:hover, .nav-link.active { 
+      color: var(--color-accent);
+      background: rgba(255,230,128,0.1);
+    }
+
+    .desktop-only { display: block; }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 22px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    .bar { 
+      width: 100%; 
+      height: 3px; 
+      background: var(--color-primary); 
+      transition: var(--transition); 
+      border-radius: 2px;
+    }
+
+    .mobile-menu { 
+      display: none; 
+      padding: 20px 0; 
+      border-top: 1px solid #e9ecef; 
+    }
+
+    .mobile-menu.active { display: block; }
+
+    .nav-mobile { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 15px;
+    }
+
+    .nav-mobile .nav-link { 
+      padding: 12px 20px; 
+      background: #f8f9fa;
+      border-radius: var(--border-radius);
+      text-decoration: none;
+    }
+
+    .mobile-btn { margin-top: 20px; }
+
+    .main-content {
+      flex: 1;
+      padding: 40px 0;
+      background: var(--gradient);
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 40px;
+      color: var(--color-secondary);
+    }
+
+    .page-title h1 {
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 15px;
+      letter-spacing: -0.5px;
+    }
+
+    .page-title p {
+      font-size: 18px;
+      font-weight: 400;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .calculator-card {
+      background: var(--color-secondary);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    .calculator-header {
+      background: var(--color-accent);
+      color: var(--color-primary);
+      padding: 25px 30px;
+      text-align: center;
+    }
+
+    .calculator-header h2 {
+      font-size: 26px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .calculator-body {
+      padding: 30px;
+    }
+
+    .services-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 15px;
+      margin: 0 -10px;
+    }
+
+    .services-table thead th {
+      background: var(--color-primary);
+      color: var(--color-secondary);
+      padding: 18px 15px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .services-table thead th:first-child {
+      border-radius: 10px 0 0 10px;
+    }
+
+    .services-table thead th:last-child {
+      border-radius: 0 10px 10px 0;
+    }
+
+    .service-row {
+      background: #f8f9fa;
+      transition: var(--transition);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .service-row:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .services-table td {
+      padding: 20px 15px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .service-name {
+      font-weight: 600;
+      color: var(--color-primary);
+      text-align: left;
+      padding-left: 25px;
+    }
+
+    .service-price {
+      font-weight: 700;
+      color: var(--color-primary);
+      font-size: 16px;
+    }
+
+    .service-option select {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+      background: var(--color-secondary);
+      font-family: var(--font-family);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .service-option select:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(255,230,128,0.2);
+    }
+
+    .service-quantity input {
+      width: 90px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+      text-align: center;
+      font-family: var(--font-family);
+      font-size: 16px;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .service-quantity input:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(255,230,128,0.2);
+    }
+
+    .service-subtotal {
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--color-primary);
+    }
+
+    .calculator-footer {
+      padding: 25px 30px;
+      background: #f8f9fa;
+      border-top: 1px solid #e9ecef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .total-amount {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .total-label {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--color-gray);
+    }
+
+    .total-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--color-primary);
+      background: var(--color-accent);
+      padding: 10px 25px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 30px;
+      border-radius: var(--border-radius);
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-secondary);
+    }
+
+    .btn-primary:hover {
+      background: #1e2a38;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .btn-highlight {
+      background: var(--color-accent);
+      color: var(--color-primary);
+    }
+
+    .btn-highlight:hover {
+      background: #e6d273;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .footer {
+      background: var(--color-dark);
+      color: #adb5bd;
+      padding: 40px 0 30px;
+      text-align: center;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .footer-info h3 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--color-secondary);
+      margin-bottom: 10px;
+    }
+
+    .footer-info h3 span {
+      color: var(--color-accent);
+    }
+
+    .footer-info p {
+      font-size: 16px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .footer-contact {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 16px;
+    }
+
+    .contact-item i {
+      color: var(--color-accent);
+      font-size: 20px;
+    }
+
+    .footer-bottom {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #343a40;
+      font-size: 14px;
+    }
+
+    @media (max-width: 992px) {
+      .nav-desktop { display: none; }
+      .desktop-only { display: none; }
+      .menu-toggle { display: flex; }
+      
+      .services-table thead { display: none; }
+      
+      .service-row {
+        display: flex;
+        flex-direction: column;
+        padding: 25px;
+        margin-bottom: 20px;
+      }
+      
+      .services-table td {
+        display: block;
+        text-align: left;
+        padding: 12px 0;
+        border: none;
+      }
+      
+      .service-name {
+        font-size: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px dashed #dee2e6;
+        margin-bottom: 15px;
+      }
+      
+      .calculator-footer {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .logo span { font-size: 22px; }
+      .page-title h1 { font-size: 32px; }
+      .page-title p { font-size: 16px; }
+      .calculator-body { padding: 20px; }
+      .footer-contact { flex-direction: column; gap: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="navbar">
+        <a href="index.php" class="logo">
+          <img src="IMG/logo.png" alt="Logo Hyper Infinity" class="logo-img">
+          <span>Hyper<span style="color:var(--color-accent)">Infinity</span></span>
+        </a>
+        <nav class="nav-desktop">
+          <a href="index.php" class="nav-link">Inicio</a>
+          <a href="proyectos.php" class="nav-link">Proyectos</a>
+          <a href="mision-vision.php" class="nav-link">Misión y Visión</a>
+          <a href="contactt.php" class="nav-link">Contacto</a>
+        </nav>
+   
+        <button class="menu-toggle" id="menuToggle">
+          <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </button>
+      </div>
+      <div class="mobile-menu" id="mobileMenu">
+        <nav class="nav-mobile">
+          <a href="index.php" class="nav-link">Inicio</a>
+          <a href="proyectos.php" class="nav-link">Proyectos</a>
+          <a href="mision-vision.php" class="nav-link">Misión y Visión</a>
+          <a href="contactt.php" class="nav-link">Contacto</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <div class="page-title">
+        <h1>Generador de Cotizaciones</h1>
+        <p>Calcula el costo de nuestros servicios profesionales de manera rápida y precisa</p>
+      </div>
+
+      <div class="calculator-card">
+        <div class="calculator-header">
+          <h2><i class="fas fa-calculator"></i> Cotizador de Servicios</h2>
+        </div>
+        
+        <div class="calculator-body">
+          <table class="services-table">
+            <thead>
+              <tr>
+                <th>Servicio</th>
+                <th>Precio Sugerido</th>
+                <th>Opciones</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="service-row">
+                <td class="service-name">Desarrollo Web</td>
+                <td class="service-price" data-precio="1000000">$1.000.000</td>
+                <td class="service-option">
+                  <select>
+                    <option value="0">Sin extra</option>
+                    <option value="1500000">Página funcional (+$1.500.000)</option>
+                    <option value="1200000">Página visual (+$1.200.000)</option>
+                    <option value="1300000">Página interna (+$1.300.000)</option>
+                    <option value="1800000">Página externa (+$1.800.000)</option>
+                  </select>
+                </td>
+                <td class="service-quantity">
+                  <input type="number" min="0" value="0">
+                </td>
+                <td class="service-subtotal">$0</td>
+              </tr>
+
+              <tr class="service-row">
+                <td class="service-name">Diseño Web</td>
+                <td class="service-price" data-precio="1000000">$1.000.000</td>
+                <td class="service-option">
+                  <select>
+                    <option value="0">Sin extra</option>
+                    <option value="1500000">Página funcional (+$1.500.000)</option>
+                    <option value="1200000">Página visual (+$1.200.000)</option>
+                    <option value="1300000">Página interna (+$1.300.000)</option>
+                    <option value="1800000">Página externa (+$1.800.000)</option>
+                  </select>
+                </td>
+                <td class="service-quantity">
+                  <input type="number" min="0" value="0">
+                </td>
+                <td class="service-subtotal">$0</td>
+              </tr>
+
+              <tr class="service-row">
+                <td class="service-name">Consultoría Digital</td>
+                <td class="service-price" data-precio="2000000">$2.000.000</td>
+                <td class="service-option">
+                  <select>
+                    <option value="0">Sin extra</option>
+                    <option value="1500000">Página funcional (+$1.500.000)</option>
+                    <option value="1200000">Página visual (+$1.200.000)</option>
+                    <option value="1300000">Página interna (+$1.300.000)</option>
+                    <option value="1800000">Página externa (+$1.800.000)</option>
+                  </select>
+                </td>
+                <td class="service-quantity">
+                  <input type="number" min="0" value="0">
+                </td>
+                <td class="service-subtotal">$0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="calculator-footer">
+          <div class="total-amount">
+            <span class="total-label">Total:</span>
+            <span class="total-value" id="totalLabel">$0</span>
+          </div>
+          
+          <div class="action-buttons">
+            <button id="btnReset" class="btn">
+              <i class="fas fa-redo"></i> Reiniciar
+            </button>
+            <button id="btnGen" class="btn btn-highlight">
+              <i class="fas fa-file-pdf"></i> Generar PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-info">
+          <h3>Hyper<span>Infinity</span></h3>
+          <p>Soluciones digitales innovadoras para potenciar tu negocio</p>
+        </div>
+        
+        <div class="footer-contact">
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <span>+34 912 345 678</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <span>info@hyperinfinity.com</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Calle Principal, 123, Madrid</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 HyperInfinity - Todos los derechos reservados</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('menuToggle').addEventListener('click', function() {
+      document.getElementById('mobileMenu').classList.toggle('active');
+    });
+
+    function parseNumberFromString(s){
+      if(!s) return 0;
+      const digits = s.toString().replace(/[^\d]/g,'');
+      return parseInt(digits || '0', 10);
+    }
+
+    function formatCOP(n){
+      return '$' + (Number(n) || 0).toLocaleString('es-CO');
+    }
+
+    function actualizarSubtotales(){
+      const rows = document.querySelectorAll('.service-row');
+      let total = 0;
+      
+      rows.forEach(row => {
+        const precioBase = parseInt(row.querySelector('.service-price').dataset.precio || '0', 10);
+        const extra = parseInt(row.querySelector('select').value || '0', 10);
+        const cantidad = parseInt(row.querySelector('input[type="number"]').value || '0', 10);
+        const subtotal = (precioBase + extra) * (cantidad || 0);
+        
+        row.querySelector('.service-subtotal').textContent = formatCOP(subtotal);
+        total += subtotal;
+      });
+      
+      document.getElementById('totalLabel').textContent = formatCOP(total);
+      return total;
+    }
+
+    document.querySelectorAll('.service-option select, .service-quantity input').forEach(el => {
+      el.addEventListener('input', actualizarSubtotales);
+    });
+
+    document.getElementById('btnReset').addEventListener('click', function() {
+      document.querySelectorAll('.service-option select').forEach(select => {
+        select.selectedIndex = 0;
+      });
+      
+      document.querySelectorAll('.service-quantity input').forEach(input => {
+        input.value = 0;
+      });
+      
+      actualizarSubtotales();
+    });
+
+    actualizarSubtotales();
+
+    document.getElementById('btnGen').addEventListener('click', async function() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const pageWidth = 210;
+      const margin = 15;
+      let y = 20;
+
+      doc.setFillColor(44, 62, 80);
+      doc.rect(0, 0, pageWidth, 25, 'F');
+
+      try {
+        const logoImg = new Image();
+        logoImg.src = 'logo.png';
+        
+        await new Promise((resolve, reject) => {
+          logoImg.onload = resolve;
+          logoImg.onerror = reject;
+          setTimeout(resolve, 500);
+        });
+        
+        doc.addImage(logoImg, 'PNG', margin, 5, 20, 15);
+      } catch (e) {
+        console.log('Logo no cargado, continuando sin él');
+      }
+
+      doc.setFontSize(20);
+      doc.setTextColor(255, 255, 255);
+      doc.text('HyperInfinity', margin + 25, 15);
+      
+      doc.setFontSize(10);
+      doc.text('Cotización', margin + 25, 20);
+      
+      const fecha = new Date();
+      doc.setTextColor(255, 255, 255);
+      doc.text('Fecha: ' + fecha.toLocaleDateString(), pageWidth - margin - 40, 15);
+      
+      y = 35;
+      doc.setFontSize(16);
+      doc.setTextColor(44, 62, 80);
+      doc.text('DETALLE DE COTIZACIÓN', margin, y);
+      y += 10;
+      
+      const services = [];
+      let finalTotal = 0;
+      
+      document.querySelectorAll('.service-row').forEach(row => {
+        const cantidad = parseInt(row.querySelector('input').value || '0', 10);
+        if (cantidad > 0) {
+          const name = row.querySelector('.service-name').textContent;
+          const price = parseInt(row.querySelector('.service-price').dataset.precio, 10);
+          const extra = parseInt(row.querySelector('select').value, 10);
+          const option = row.querySelector('select').options[row.querySelector('select').selectedIndex].text;
+          const subtotal = (price + extra) * cantidad;
+          
+          services.push({ name, price, extra, option, cantidad, subtotal });
+          finalTotal += subtotal;
+        }
+      });
+      
+      doc.setFontSize(10);
+      doc.setTextColor(255, 255, 255);
+      doc.setFillColor(255, 230, 128);
+      doc.rect(margin, y, pageWidth - (margin * 2), 8, 'F');
+      
+      doc.setTextColor(44, 62, 80);
+      doc.text('Servicio', margin + 2, y + 5);
+      doc.text('Cantidad', 130, y + 5);
+      doc.text('Precio', 160, y + 5);
+      doc.text('Total', pageWidth - margin - 15, y + 5, { align: 'right' });
+      
+      y += 12;
+      
+      services.forEach(service => {
+        if (y > 250) {
+          doc.addPage();
+          y = 20;
+        }
+        
+        doc.setTextColor(44, 62, 80);
+        doc.setFont(undefined, 'bold');
+        doc.text(service.name, margin, y);
+        doc.setFont(undefined, 'normal');
+        
+        doc.text(service.cantidad.toString(), 130, y);
+        doc.text(formatCOP(service.price + service.extra), 160, y);
+        doc.text(formatCOP(service.subtotal), pageWidth - margin - 15, y, { align: 'right' });
+        
+        if (service.extra > 0) {
+          y += 4;
+          doc.setFontSize(8);
+          doc.setTextColor(108, 117, 125);
+          doc.text('Incluye: ' + service.option, margin + 5, y);
+          doc.setFontSize(10);
+        }
+        
+        y += 8;
+      });
+      
+      y += 5;
+      doc.setDrawColor(44, 62, 80);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 8;
+      
+      doc.setFontSize(14);
+      doc.setTextColor(44, 62, 80);
+      doc.text('TOTAL:', margin, y);
+      doc.setFontSize(16);
+      doc.setFont(undefined, 'bold');
+      doc.text(formatCOP(finalTotal), pageWidth - margin - 15, y, { align: 'right' });
+      
+      y += 15;
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(108, 117, 125);
+      doc.text('Esta cotización es válida por 30 días a partir de la fecha de emisión.', margin, y);
+      y += 5;
+      doc.text('Gracias por considerar nuestros servicios.', margin, y);
+      
+      doc.save('Cotización_HyperInfinity.pdf');
+    });
+  </script>
+</body>
+</html>
